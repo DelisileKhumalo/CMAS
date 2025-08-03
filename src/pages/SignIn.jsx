@@ -1,37 +1,36 @@
-
-// src/pages/SignIn.jsx
+// File: src/pages/SignIn.jsx
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import './AuthForm.css'; // optional styling file
 
-const SignIn = () => {
-  const navigate = useNavigate();
-  const { login } = useContext(AuthContext); // ✅ fix 1
-  const [form, setForm] = useState({ email: '', password: '' });
+function SignIn() {
+  const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
-  const handleChange = e => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
 
     try {
-      const res = await fetch('/api/auth/login', {
+      const res = await fetch('http://localhost:3000/api/signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form)
+        body: JSON.stringify(formData)
       });
 
-      const data = await res.json(); // ✅ fix 2: define `data`
+      const data = await res.json();
 
-      if (!res.ok) {
-        setError(data.message || 'Login failed');
+      if (res.ok) {
+        login(data.user); // Save user to context
+        navigate('/dashboard'); // Redirect to dashboard
       } else {
-        login(data); // store user in context + localStorage
-        navigate('/dashboard');
+        setError(data.error || 'Login failed');
       }
     } catch (err) {
       setError('Server error');
@@ -39,19 +38,30 @@ const SignIn = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-12 p-6 border rounded shadow">
-      <h2 className="text-2xl font-bold mb-4">Sign In</h2>
-      {error && <p className="text-red-500">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <input className="w-full p-2 border rounded" type="email" name="email" placeholder="Email" value={form.email} onChange={handleChange} required />
-        <input className="w-full p-2 border rounded" type="password" name="password" placeholder="Password" value={form.password} onChange={handleChange} required />
-        <button type="submit" className="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700">Sign In</button>
+    <div className="auth-form-container">
+      <h2>Sign In</h2>
+      <form onSubmit={handleSubmit} className="auth-form">
+        <input
+          type="email"
+          name="email"
+          placeholder="Email Address"
+          value={formData.email}
+          onChange={handleChange}
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+        />
+        <button type="submit">Sign In</button>
+        {error && <p className="error">{error}</p>}
       </form>
-      <p className="mt-4 text-sm text-center">
-        Don’t have an account? <a className="text-blue-600 underline" href="/signup">Sign Up</a>
-      </p>
     </div>
   );
-};
+}
 
 export default SignIn;

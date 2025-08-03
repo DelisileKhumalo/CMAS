@@ -7,90 +7,50 @@ import Dashboard from './pages/Dashboard';
 import Logs from './pages/Logs';
 import SignIn from './pages/SignIn';
 import SignUp from './pages/SignUp';
-import { AuthProvider, AuthContext } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import MedicationUseForm from './pages/MedicationUseForm';
+import RestockForm from './pages/RestockForm';
 import './App.css';
 
-// Navbar component (cleaner)
-const Navbar = ({ menuOpen, setMenuOpen }) => {
-  const { user, logout } = React.useContext(AuthContext);
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/signin');
-  };
-
-  return (
-    <nav className="navbar">
-      <h1 className="logo">Clinic MedSys</h1>
-      <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
-        ☰
-      </button>
-      <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
-        <li><NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>Home</NavLink></li>
-        <li><NavLink to="/alerts" className={({ isActive }) => isActive ? 'active' : ''}>Alerts</NavLink></li>
-        <li><NavLink to="/dashboard" className={({ isActive }) => isActive ? 'active' : ''}>Dashboard</NavLink></li>
-        <li><NavLink to="/logs" className={({ isActive }) => isActive ? 'active' : ''}>Logs</NavLink></li>
-      </ul>
-
-      <div className="auth-buttons">
-        {user ? (
-          <button className="auth-btn" onClick={handleLogout}>Logout</button>
-        ) : (
-          <>
-            <button className="auth-btn" onClick={() => navigate('/signin')}>Sign In</button>
-            <button className="auth-btn" onClick={() => navigate('/signup')}>Sign Up</button>
-          </>
-        )}
-      </div>
-    </nav>
-  );
-};
-
-// Main App
-const App = () => {
+function App() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <AuthProvider>
-      <Router>
-        <Navbar menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+    <Router>
+      <div className="app-container">
+        <nav className="navbar">
+          <h1 className="logo">Clinic MedSys</h1>
+          <button className="menu-toggle" onClick={() => setMenuOpen(!menuOpen)}>
+            ☰
+          </button>
+          <ul className={`nav-links ${menuOpen ? 'open' : ''}`}>
+            <li><NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>Home</NavLink></li>
+            <li><NavLink to="/alerts" className={({ isActive }) => isActive ? 'active' : ''}>Alerts</NavLink></li>
+            <li><NavLink to="/dashboard" className={({ isActive }) => isActive ? 'active' : ''}>Dashboard</NavLink></li>
+            <li><NavLink to="/logs" className={({ isActive }) => isActive ? 'active' : ''}>Logs</NavLink></li>
+            <li><NavLink to="/use-medication" className={({ isActive }) => isActive ? 'active' : ''}>Use Medication</NavLink></li>
+            <li><NavLink to="/restock" className={({ isActive }) => isActive ? 'active' : ''}>Restock</NavLink></li>
+          </ul>
+        </nav>
         <div className="page-content">
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/alerts" element={<Alerts />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/logs" element={<Logs />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
-
-            <Route
-              path="/alerts"
-              element={
-                <ProtectedRoute>
-                  <Alerts />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/logs"
-              element={
-                <ProtectedRoute>
-                  <Logs />
-                </ProtectedRoute>
-              }
-            />
+            <Route path="/use-medication" element={<MedicationUseForm />} />
+            <Route path="/restock" element={<RestockForm />} />
           </Routes>
         </div>
-      </Router>
-    </AuthProvider>
+        <div className="auth-buttons">
+          <button className="auth-btn" onClick={() => window.location.href='/signin'}>Sign In</button>
+          <button className="auth-btn" onClick={() => window.location.href='/signup'}>Sign Up</button>
+        </div>
+      </div>
+    </Router>
   );
-};
+}
 
 export default App;
+
