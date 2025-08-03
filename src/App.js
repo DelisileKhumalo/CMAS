@@ -10,6 +10,7 @@ import SignUp from './pages/SignUp';
 import MedicationUseForm from './pages/MedicationUseForm';
 import RestockForm from './pages/RestockForm';
 import './App.css';
+import SearchMedications from './pages/SearchMedications';
 
 function App() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -29,6 +30,7 @@ function App() {
             <li><NavLink to="/logs" className={({ isActive }) => isActive ? 'active' : ''}>Logs</NavLink></li>
             <li><NavLink to="/use-medication" className={({ isActive }) => isActive ? 'active' : ''}>Use Medication</NavLink></li>
             <li><NavLink to="/restock" className={({ isActive }) => isActive ? 'active' : ''}>Restock</NavLink></li>
+            <li><NavLink to="/search">Search</NavLink></li>
           </ul>
         </nav>
         <div className="page-content">
@@ -41,6 +43,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/use-medication" element={<MedicationUseForm />} />
             <Route path="/restock" element={<RestockForm />} />
+            <Route path="/search" element={<SearchMedications />} />
           </Routes>
         </div>
         <div className="auth-buttons">

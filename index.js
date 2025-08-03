@@ -102,6 +102,27 @@ app.post('/api/signin', async (req, res) => {
 app.get('/', (req, res) => {
   res.send('✅ Clinic Medication Availability System Backend is running');
 });
+// Logs route - fetch all logs
+app.get('/api/logs', async (req, res) => {
+  try {
+    const logs = await Log.find().sort({ timestamp: -1 }); // most recent first
+    res.json(logs);
+  } catch (err) {
+    console.error('Error fetching logs:', err.message);
+    res.status(500).json({ error: 'Failed to fetch logs' });
+  }
+});
+// Medications route - fetch all
+app.get('/api/medications', async (req, res) => {
+  try {
+    const meds = await Medication.find();
+    res.json(meds);
+  } catch (err) {
+    console.error('Error fetching medications:', err.message);
+    res.status(500).json({ error: 'Failed to fetch medications' });
+  }
+});
+
 
 // Start Server
 app.listen(PORT, () => {
