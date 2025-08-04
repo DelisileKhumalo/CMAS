@@ -1,48 +1,41 @@
 // File: src/pages/SearchMedications.jsx
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './SearchMedications.css';
 
 function SearchMedications() {
-  const [query, setQuery] = useState('');
-  const [medications, setMedications] = useState([]);
-  const [filtered, setFiltered] = useState([]);
+  const medications = [
+    { name: 'Panado', category: 'Painkiller', quantity: 100 },
+    { name: 'ARV', category: 'HIV', quantity: 60 },
+    { name: 'Isoniazid', category: 'TB', quantity: 40 },
+    { name: 'Tamiflu', category: 'Flu', quantity: 50 },
+    { name: 'Chemoxal', category: 'Cancer', quantity: 30 }
+  ];
 
-  useEffect(() => {
-    fetch('http://localhost:3000/api/medications')
-      .then(res => res.json())
-      .then(data => {
-        setMedications(data);
-        setFiltered(data);
-      });
-  }, []);
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const handleSearch = (e) => {
-    const value = e.target.value.toLowerCase();
-    setQuery(value);
-    const results = medications.filter(med =>
-      med.name.toLowerCase().includes(value) ||
-      med.category.toLowerCase().includes(value)
-    );
-    setFiltered(results);
-  };
+  const filteredMeds = medications.filter((med) =>
+    med.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
-    <div className="search-container">
+    <div className="search-page">
       <h2>Search Medications</h2>
       <input
         type="text"
-        placeholder="Search by name or category..."
-        value={query}
-        onChange={handleSearch}
+        placeholder="Search by name..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
         className="search-input"
       />
-      <ul className="medication-list">
-        {filtered.map((med) => (
-          <li key={med._id} className="medication-item">
-            <strong>{med.name}</strong> — {med.category} (Qty: {med.quantity})
-          </li>
+      <div className="medication-results">
+        {filteredMeds.map((med, index) => (
+          <div key={index} className="med-card">
+            <h4>{med.name}</h4>
+            <p>Category: {med.category}</p>
+            <p>Quantity: {med.quantity}</p>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

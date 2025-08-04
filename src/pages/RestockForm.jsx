@@ -8,11 +8,16 @@ function RestockForm() {
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:3000/api/medications')
-      .then(res => res.json())
-      .then(data => setMedications(data))
-      .catch(err => console.error('Failed to load medications', err));
-  }, []);
+  // Simulate fetch from API
+  setMedications([
+    { _id: 1, name: 'Panado' },
+    { _id: 2, name: 'ARV' },
+    { _id: 3, name: 'Isoniazid' },
+    { _id: 4, name: 'Tamiflu' },
+    { _id: 5, name: 'Chemoxal' }
+  ]);
+}, []);
+
 
   const handleChange = (e) => {
     setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));

@@ -1,42 +1,18 @@
-.dashboard {
-  padding: 1rem;
+/* Dashboard.css */
+.dashboard-page {
+  padding: 2rem;
 }
 
-.card-grid {
+.dashboard-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
 }
 
-.card {
-  background-color: #e0f2fe;
-  border-left: 6px solid #0c4a6e;
+.med-card {
+  border: 1px solid #ddd;
   border-radius: 10px;
   padding: 1rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  transition: transform 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-.card:hover {
-  transform: translateY(-4px);
-}
-
-.card-icon {
-  font-size: 2rem;
-}
-
-.card-title {
-  font-weight: bold;
-  margin-top: 0.5rem;
-}
-
-.card-value {
-  font-size: 1.2rem;
-  margin: 0.3rem 0;
-}
-
-.card-desc {
-  font-size: 0.85rem;
-  color: #444;
-}

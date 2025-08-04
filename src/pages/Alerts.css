@@ -1,0 +1,16 @@
+.alerts-page {
+  padding: 2rem;
+}
+
+.alert-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.alert-item {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 8px;
+}
